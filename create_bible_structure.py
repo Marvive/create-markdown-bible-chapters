@@ -109,19 +109,38 @@ base_dir = "Bible"
 # Create folders and files
 total_books = 0
 total_chapters = 0
+total_folder_notes = 0
 
 for testament, categories in bible_structure.items():
     testament_dir = os.path.join(base_dir, testament)
     os.makedirs(testament_dir, exist_ok=True)
     
+    # Create testament folder note
+    testament_note = os.path.join(testament_dir, f"{testament}.md")
+    with open(testament_note, "w") as f:
+        f.write(f"# {testament}\n\n")
+    total_folder_notes += 1
+    
     for category, books in categories.items():
         category_dir = os.path.join(testament_dir, category)
         os.makedirs(category_dir, exist_ok=True)
+        
+        # Create category folder note
+        category_note = os.path.join(category_dir, f"{category}.md")
+        with open(category_note, "w") as f:
+            f.write(f"# {category}\n\n")
+        total_folder_notes += 1
         
         for book, chapters in books.items():
             total_books += 1
             book_dir = os.path.join(category_dir, book)
             os.makedirs(book_dir, exist_ok=True)
+            
+            # Create book folder note
+            book_note = os.path.join(book_dir, f"{book}.md")
+            with open(book_note, "w") as f:
+                f.write(f"# {book}\n\n")
+            total_folder_notes += 1
             
             # Create chapter files
             for chapter in range(1, chapters + 1):
@@ -130,4 +149,4 @@ for testament, categories in bible_structure.items():
                 with open(chapter_file, "w") as f:
                     f.write(f"# {book} Chapter {chapter}\n\n")
                     
-print(f"Created Bible structure with {total_books} books and {total_chapters} chapters.") 
+print(f"Created Bible structure with {total_books} books, {total_chapters} chapters, and {total_folder_notes} folder notes.") 
